@@ -1,29 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const faqs = [
-  {
-    question: 'How often does it check my site?',
-    answer: 'The free plan checks your site every 5 minutes from multiple locations. The upcoming Pro plan will offer 1-minute checks for more critical applications.'
-  },
-  {
-    question: 'Can I monitor more than one site?',
-    answer: 'The free plan allows monitoring of one site. The Pro plan (coming soon) will allow up to 10 sites on a single account.'
-  },
-  {
-    question: 'What if I want SMS alerts?',
-    answer: 'SMS alerts will be available as an add-on ($3/month) with the Pro plan. The free plan includes email notifications only.'
-  },
-  {
-    question: 'Is this really free?',
-    answer: 'Yes! The basic monitoring service is completely free with no hidden costs. We may introduce premium features in the future, but the core monitoring will always remain free.'
-  },
-  {
-    question: 'Do I need to install anything?',
-    answer: 'No installation required! We monitor your site externally, just like your visitors would access it. There\'s nothing to install on your server.'
-  }
-];
-
 const Home = () => {
   return (
     <div className="font-sans text-dark bg-light">
@@ -179,33 +156,6 @@ const Home = () => {
               <h3 className="text-xl font-bold mb-3">1-Min Checks</h3>
               <p className="text-gray-600">Upgrade to check your site every minute for critical applications (coming soon).</p>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Add FAQ Section */}
-      <section id="faq" className="py-16 md:py-24 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Everything you need to know about our service.</p>
-          </div>
-          <div className="max-w-3xl mx-auto">
-            {faqs.map((faq, idx) => (
-              <div key={idx} className="mb-4">
-                <button
-                  className="w-full text-left p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
-                >
-                  <div className="flex justify-between items-center">
-                    <span className="font-medium">{faq.question}</span>
-                    <i className="fas fa-chevron-down text-gray-500"></i>
-                  </div>
-                </button>
-                <div className="mt-2 p-4 bg-gray-50 rounded-lg">
-                  <p className="text-gray-600">{faq.answer}</p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </section>
