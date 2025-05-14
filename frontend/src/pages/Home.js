@@ -1,19 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Home = () => {
-  const navigate = useNavigate();
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    navigate('/login');
-  };
-
-  const handleSignup = (e) => {
-    e.preventDefault();
-    navigate('/register');
-  };
-
   return (
     <div className="font-sans text-dark bg-light">
       {/* Navigation */}
@@ -30,25 +18,19 @@ const Home = () => {
             <a href="#faq" className="hover:text-primary transition">FAQ</a>
           </div>
           <div className="flex items-center space-x-4">
-            <button 
-              type="button"
-              onClick={handleLogin}
+            <Link 
+              to="/login"
               className="hidden md:block hover:text-primary transition"
             >
               Log In
-            </button>
-            <button 
-              type="button"
-              onClick={handleSignup}
+            </Link>
+            <Link 
+              to="/register"
               className="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition"
             >
               Sign Up Free
-            </button>
-            <button 
-              type="button"
-              className="md:hidden text-gray-600" 
-              onClick={() => alert('Mobile menu would open here in a full implementation')}
-            >
+            </Link>
+            <button className="md:hidden text-gray-600" onClick={() => alert('Mobile menu would open here in a full implementation')}>
               <i className="fas fa-bars text-xl"></i>
             </button>
           </div>
@@ -63,13 +45,12 @@ const Home = () => {
               <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">Know When Your Website Goes Down — Instantly</h1>
               <p className="text-xl text-gray-600 mb-8">A simple, affordable monitoring tool made for personal blogs, side projects, and small business sites. No setup. No stress.</p>
               <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                <button 
-                  type="button"
-                  onClick={handleSignup}
+                <Link 
+                  to="/register"
                   className="bg-secondary hover:bg-green-600 text-white px-6 py-3 rounded-md font-medium text-center transition"
                 >
                   Start Monitoring Free <i className="fas fa-arrow-right ml-2"></i>
-                </button>
+                </Link>
                 <a href="#how-it-works" className="border border-gray-300 hover:border-primary text-gray-700 hover:text-primary px-6 py-3 rounded-md font-medium text-center transition">How It Works</a>
               </div>
               <div className="mt-6 flex items-center">
