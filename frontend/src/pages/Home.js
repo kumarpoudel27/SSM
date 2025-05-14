@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 const faqs = [
@@ -25,12 +25,6 @@ const faqs = [
 ];
 
 const Home = () => {
-  const [openFaq, setOpenFaq] = useState(null);
-
-  const handleFaqToggle = (idx) => {
-    setOpenFaq(openFaq === idx ? null : idx);
-  };
-
   return (
     <div className="font-sans text-dark bg-light">
       {/* Navigation */}
@@ -200,19 +194,16 @@ const Home = () => {
             {faqs.map((faq, idx) => (
               <div key={idx} className="mb-4">
                 <button
-                  onClick={() => handleFaqToggle(idx)}
                   className="w-full text-left p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
                 >
                   <div className="flex justify-between items-center">
                     <span className="font-medium">{faq.question}</span>
-                    <i className={`fas fa-chevron-${openFaq === idx ? 'up' : 'down'} text-gray-500`}></i>
+                    <i className="fas fa-chevron-down text-gray-500"></i>
                   </div>
                 </button>
-                {openFaq === idx && (
-                  <div className="mt-2 p-4 bg-gray-50 rounded-lg">
-                    <p className="text-gray-600">{faq.answer}</p>
-                  </div>
-                )}
+                <div className="mt-2 p-4 bg-gray-50 rounded-lg">
+                  <p className="text-gray-600">{faq.answer}</p>
+                </div>
               </div>
             ))}
           </div>
