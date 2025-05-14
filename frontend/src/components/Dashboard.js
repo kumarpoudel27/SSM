@@ -23,8 +23,7 @@ const Dashboard = () => {
           return;
         }
         setUser(userData);
-        // TODO: Fetch monitors data here
-        setMonitors([]); // Placeholder for now
+        await fetchMonitors();
       } catch (err) {
         setError('Failed to load user data');
         navigate('/login');
@@ -36,9 +35,33 @@ const Dashboard = () => {
     checkAuth();
   }, [navigate]);
 
+  const fetchMonitors = async () => {
+    try {
+      const monitorsData = await monitorService.getMonitors();
+      setMonitors(monitorsData);
+    } catch (err) {
+      setError('Failed to fetch monitors');
+    }
+  };
+
   const handleLogout = () => {
     authService.logout();
     navigate('/login');
+  };
+
+  const handleAddMonitor = async (newMonitor) => {
+    setMonitors([...monitors, newMonitor]);
+  };
+
+  const handleDeleteMonitor = async (monitorId) => {
+    if (window.confirm('Are you sure you want to delete this monitor?')) {
+      try {
+        await monitorService.deleteMonitor(monitorId);
+        setMonitors(monitors.filter(m => m.id !== monitorId));
+      } catch (err) {
+        setError('Failed to delete monitor');
+      }
+    }
   };
 
   if (loading) {
@@ -92,7 +115,7 @@ const Dashboard = () => {
         <div className="px-4 sm:px-6 lg:px-8 mb-6">
           <button
             className="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-            onClick={() => {/* TODO: Implement add monitor functionality */}}
+            onClick={() => setIsAddModalOpen(true)}
           >
             <i className="fas fa-plus mr-2"></i>
             Add New Monitor
@@ -121,8 +144,11 @@ const Dashboard = () => {
                           <p className="text-sm font-medium text-indigo-600 truncate">{monitor.name}</p>
                         </div>
                         <div className="ml-2 flex-shrink-0 flex">
-                          <button className="ml-2 inline-flex items-center px-2.5 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            View Details
+                          <button
+                            onClick={() => handleDeleteMonitor(monitor.id)}
+                            className="ml-2 inline-flex items-center px-2.5 py-1.5 border border-red-300 shadow-sm text-xs font-medium rounded text-red-700 bg-white hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                          >
+                            Delete
                           </button>
                         </div>
                       </div>
@@ -135,7 +161,7 @@ const Dashboard = () => {
                         </div>
                         <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
                           <i className="fas fa-clock mr-1.5 text-gray-400"></i>
-                          <p>Last checked: {monitor.lastChecked}</p>
+                          <p>Last checked: {new Date(monitor.lastChecked).toLocaleString()}</p>
                         </div>
                       </div>
                     </div>
@@ -146,6 +172,18 @@ const Dashboard = () => {
           )}
         </div>
       </main>
+
+      {/* Add Monitor Modal */}
+      <Modal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        title="Add New Monitor"
+      >
+        <AddMonitor
+          onClose={() => setIsAddModalOpen(false)}
+          onMonitorAdded={handleAddMonitor}
+        />
+      </Modal>
     </div>
   );
 };
