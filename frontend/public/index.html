@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Site Monitor | Know When Your Website Goes Down</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#22C55E',
+                        dark: '#1E293B',
+                        light: '#F8FAFC',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .hero-gradient {
+            background: linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 100%);
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .status-up {
+            background-color: #22C55E;
+        }
+        .status-down {
+            background-color: #EF4444;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+    </style>
+    <!-- React will inject the correct CSS/JS files during build -->
+</head>
+<body class="font-sans text-dark bg-light">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm py-4">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-heart-pulse text-primary text-2xl"></i>
+                <span class="font-bold text-xl">SimpleSiteMonitor</span>
+            </div>
+            <div class="hidden md:flex space-x-6">
+                <a href="#features" class="hover:text-primary transition">Features</a>
+                <a href="#pricing" class="hover:text-primary transition">Pricing</a>
+                <a href="#how-it-works" class="hover:text-primary transition">How It Works</a>
+                <a href="#faq" class="hover:text-primary transition">FAQ</a>
+            </div>
+            <div class="flex items-center space-x-4">
+                <a href="#" class="hidden md:block hover:text-primary transition">Log In</a>
+                <a href="#signup" class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition">Sign Up Free</a>
+                <button class="md:hidden text-gray-600">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient py-20 md:py-32">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-12 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4">Know When Your Website Goes Down — Instantly</h1>
+                    <p class="text-xl text-gray-600 mb-8">A simple, affordable monitoring tool made for personal blogs, side projects, and small business sites. No setup. No stress.</p>
+                    <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
+                        <a href="#signup" class="bg-secondary hover:bg-green-600 text-white px-6 py-3 rounded-md font-medium text-center transition">Start Monitoring Free <i class="fas fa-arrow-right ml-2"></i></a>
+                        <a href="#how-it-works" class="border border-gray-300 hover:border-primary text-gray-700 hover:text-primary px-6 py-3 rounded-md font-medium text-center transition">How It Works</a>
+                    </div>
+                    <div class="mt-6 flex items-center">
+                        <div class="flex -space-x-2">
+                            <img src="https://randomuser.me/api/portraits/women/12.jpg" class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="w-8 h-8 rounded-full border-2 border-white" alt="User">
+                        </div>
+                        <span class="ml-3 text-gray-600">Trusted by 1,200+ creators and small businesses</span>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="bg-white rounded-xl shadow-lg p-6 max-w-md mx-auto">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-lg">Your Sites</h3>
+                            <span class="text-sm text-gray-500">Last checked: Just now</span>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <span class="status-indicator status-up"></span>
+                                    <span>yourblog.com</span>
+                                </div>
+                                <span class="text-sm text-gray-500">Up</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <span class="status-indicator status-up"></span>
+                                    <span>sideproject.dev</span>
+                                </div>
+                                <span class="text-sm text-gray-500">Up</span>
+                            </div>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center">
+                                    <span class="status-indicator status-down"></span>
+                                    <span>shop.example.com</span>
+                                </div>
+                                <span class="text-sm text-red-500">Down (2 min)</span>
+                            </div>
+                        </div>
+                        <div class="mt-6 pt-6 border-t border-gray-200">
+                            <div class="flex justify-between items-center">
+                                <span class="text-gray-600">Add new site</span>
+                                <button class="bg-primary hover:bg-blue-700 text-white p-2 rounded-full">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Badges -->
+    <section class="py-8 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+                <div class="text-gray-400 font-medium">As featured in:</div>
+                <div class="flex items-center space-x-8">
+                    <i class="fab fa-dev text-3xl text-gray-600"></i>
+                    <i class="fab fa-reddit text-3xl text-orange-500"></i>
+                    <i class="fab fa-product-hunt text-3xl text-orange-400"></i>
+                    <i class="fab fa-hacker-news text-3xl text-orange-500"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Simple Monitoring for Your Peace of Mind</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Everything you need to ensure your website stays online, without the complexity of enterprise tools.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature 1 -->
+                <div class="feature-card bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-bell text-blue-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Instant Alerts</h3>
+                    <p class="text-gray-600">Get notified via email the moment your site goes down so you can take action immediately.</p>
+                </div>
+                
+                <!-- Feature 2 -->
+                <div class="feature-card bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-chart-line text-green-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Live Status</h3>
+                    <p class="text-gray-600">Real-time uptime dashboard showing current status and response times for all your sites.</p>
+                </div>
+                
+                <!-- Feature 3 -->
+                <div class="feature-card bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-plug text-purple-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">No Setup</h3>
+                    <p class="text-gray-600">Just paste your URL. We handle the rest. No complicated configurations or server setups.</p>
+                </div>
+                
+                <!-- Feature 4 -->
+                <div class="feature-card bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-history text-yellow-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Simple Logs</h3>
+                    <p class="text-gray-600">See when issues happened, how long they lasted, and your overall uptime percentage.</p>
+                </div>
+                
+                <!-- Feature 5 -->
+                <div class="feature-card bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-envelope text-red-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Email Alerts</h3>
+                    <p class="text-gray-600">Get notifications directly to your inbox. No need to integrate with other services.</p>
+                </div>
+                
+                <!-- Feature 6 -->
+                <div class="feature-card bg-white p-8 rounded-xl shadow-sm hover:shadow-md transition duration-300">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center mb-6">
+                        <i class="fas fa-bolt text-indigo-600 text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">1-Min Checks</h3>
+                    <p class="text-gray-600">Upgrade to check your site every minute for critical applications (coming soon).</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Transparent Pricing</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Start monitoring for free. Upgrade when you need more.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Free Tier -->
+                <div class="border border-gray-200 rounded-xl p-8 hover:border-primary transition">
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold mb-2">Free</h3>
+                        <p class="text-gray-600">Perfect for personal projects and blogs</p>
+                    </div>
+                    <div class="mb-8">
+                        <span class="text-4xl font-bold">$0</span>
+                        <span class="text-gray-500">/forever</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Monitor 1 site</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>5-minute checks</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Email alerts</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Basic uptime logs</span>
+                        </li>
+                    </ul>
+                    <a href="#signup" class="block w-full bg-primary hover:bg-blue-700 text-white text-center py-3 rounded-md font-medium transition">Get Started Free</a>
+                </div>
+                
+                <!-- Pro Tier -->
+                <div class="border-2 border-primary rounded-xl p-8 relative">
+                    <div class="absolute top-0 right-0 bg-primary text-white px-3 py-1 text-xs font-bold rounded-bl-lg rounded-tr-lg">COMING SOON</div>
+                    <div class="mb-6">
+                        <h3 class="text-2xl font-bold mb-2">Pro</h3>
+                        <p class="text-gray-600">For small businesses and critical sites</p>
+                    </div>
+                    <div class="mb-8">
+                        <span class="text-4xl font-bold">$5</span>
+                        <span class="text-gray-500">/month</span>
+                    </div>
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Monitor up to 10 sites</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>1-minute checks</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>SMS alerts (+$3/month)</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Advanced reporting</span>
+                        </li>
+                    </ul>
+                    <button class="w-full bg-gray-100 text-gray-700 text-center py-3 rounded-md font-medium cursor-not-allowed">Notify Me When Available</button>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center text-gray-500">
+                <p>No credit card required. Cancel anytime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">How Simple Site Monitor Works</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Get set up in under a minute. Seriously.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <!-- Step 1 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-2xl font-bold text-blue-600">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Add Your Site</h3>
+                    <p class="text-gray-600">Just paste your URL. No complicated setup or configuration needed.</p>
+                </div>
+                
+                <!-- Step 2 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-2xl font-bold text-green-600">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">We Monitor</h3>
+                    <p class="text-gray-600">Our system checks your site every 5 minutes from multiple locations.</p>
+                </div>
+                
+                <!-- Step 3 -->
+                <div class="text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <span class="text-2xl font-bold text-purple-600">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">You Get Alerts</h3>
+                    <p class="text-gray-600">Receive instant notifications when your site goes down or comes back up.</p>
+                </div>
+            </div>
+            
+            <div class="mt-16 bg-white rounded-xl shadow-sm overflow-hidden max-w-4xl mx-auto">
+                <div class="aspect-w-16 aspect-h-9">
+                    <div class="bg-gray-200 h-96 flex items-center justify-center">
+                        <i class="fas fa-play-circle text-5xl text-primary opacity-50"></i>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-bold mb-2">See it in action (1:23)</h3>
+                    <p class="text-gray-600">Watch how quickly you can set up monitoring for your website.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">What Our Users Say</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Don't just take our word for it.</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Testimonial 1 -->
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" class="w-12 h-12 rounded-full mr-4" alt="Maya T.">
+                        <div>
+                            <h4 class="font-bold">Maya T.</h4>
+                            <p class="text-gray-500 text-sm">Indie Game Developer</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"This is exactly what I needed. Pingdom was overkill for my small game server. Now I can relax knowing I'll be alerted if anything goes wrong."</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 2 -->
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/men/54.jpg" class="w-12 h-12 rounded-full mr-4" alt="Raj P.">
+                        <div>
+                            <h4 class="font-bold">Raj P.</h4>
+                            <p class="text-gray-500 text-sm">E-commerce Store Owner</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"When my store went down during a promotion, Simple Site Monitor alerted me immediately. I fixed it before losing too many sales. Lifesaver!"</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <!-- Testimonial 3 -->
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <div class="flex items-center mb-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="w-12 h-12 rounded-full mr-4" alt="Sophia L.">
+                        <div>
+                            <h4 class="font-bold">Sophia L.</h4>
+                            <p class="text-gray-500 text-sm">Blogger</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 italic">"I tried other monitoring tools but they were too complex. This does exactly what I need - tells me when my blog is down - nothing more, nothing less."</p>
+                    <div class="mt-4 text-yellow-400">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="py-16 md:py-24 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+                <p class="text-xl text-gray-600 max-w-2xl mx-auto">Everything you need to know before getting started.</p>
+            </div>
+            
+            <div class="max-w-3xl mx-auto">
+                <!-- FAQ Item 1 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-toggle w-full flex justify-between items-center text-left font-medium text-lg">
+                        <span>How often does it check my site?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-2 text-gray-600">
+                        <p>The free plan checks your site every 5 minutes from multiple locations. The upcoming Pro plan will offer 1-minute checks for more critical applications.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 2 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-toggle w-full flex justify-between items-center text-left font-medium text-lg">
+                        <span>Can I monitor more than one site?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-2 text-gray-600">
+                        <p>The free plan allows monitoring of one site. The Pro plan (coming soon) will allow up to 10 sites on a single account.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 3 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-toggle w-full flex justify-between items-center text-left font-medium text-lg">
+                        <span>What if I want SMS alerts?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-2 text-gray-600">
+                        <p>SMS alerts will be available as an add-on ($3/month) with the Pro plan. The free plan includes email notifications only.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 4 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-toggle w-full flex justify-between items-center text-left font-medium text-lg">
+                        <span>Is this really free?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-2 text-gray-600">
+                        <p>Yes! The basic monitoring service is completely free with no hidden costs. We may introduce premium features in the future, but the core monitoring will always remain free.</p>
+                    </div>
+                </div>
+                
+                <!-- FAQ Item 5 -->
+                <div class="mb-4 border-b border-gray-200 pb-4">
+                    <button class="faq-toggle w-full flex justify-between items-center text-left font-medium text-lg">
+                        <span>Do I need to install anything?</span>
+                        <i class="fas fa-chevron-down transition-transform duration-300"></i>
+                    </button>
+                    <div class="accordion-content mt-2 text-gray-600">
+                        <p>No installation required! We monitor your site externally, just like your visitors would access it. There's nothing to install on your server.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-12 text-center">
+                <p class="text-gray-600">Still have questions? <a href="#" class="text-primary hover:underline">Contact us</a> and we'll be happy to help.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="signup" class="py-16 md:py-24 bg-primary text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Monitor Your Site?</h2>
+            <p class="text-xl opacity-90 max-w-2xl mx-auto mb-8">Join thousands of developers, bloggers, and small business owners who never miss a website outage.</p>
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+                <a href="#" class="bg-white text-primary hover:bg-gray-100 px-8 py-4 rounded-md font-bold text-lg transition">Start Monitoring Free <i class="fas fa-arrow-right ml-2"></i></a>
+                <a href="#how-it-works" class="bg-transparent border-2 border-white hover:bg-white hover:bg-opacity-10 px-8 py-4 rounded-md font-bold text-lg transition">Learn More</a>
+            </div>
+            <p class="mt-6 opacity-80">No credit card required. Set up in under a minute.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-gray-400 py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <i class="fas fa-heart-pulse text-primary text-2xl"></i>
+                        <span class="font-bold text-white text-xl">SimpleSiteMonitor</span>
+                    </div>
+                    <p class="mb-4">Simple monitoring for the small web.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-github"></i></a>
+                        <a href="#" class="hover:text-white transition"><i class="fab fa-product-hunt"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-medium mb-4">Product</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#features" class="hover:text-white transition">Features</a></li>
+                        <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
+                        <li><a href="#how-it-works" class="hover:text-white transition">How It Works</a></li>
+                        <li><a href="#" class="hover:text-white transition">Roadmap</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-medium mb-4">Resources</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#faq" class="hover:text-white transition">FAQ</a></li>
+                        <li><a href="#" class="hover:text-white transition">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition">Status</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="text-white font-medium mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white transition">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-12 pt-8 text-sm">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p>© 2023 Simple Site Monitor. All rights reserved.</p>
+                    <p class="mt-4 md:mt-0">Made with <i class="fas fa-heart text-red-400"></i> for the indie web</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const content = button.nextElementSibling;
+                const icon = button.querySelector('i');
+                
+                // Toggle the content
+                if (content.style.maxHeight) {
+                    content.style.maxHeight = null;
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // Mobile menu toggle (placeholder - would need actual implementation)
+        document.querySelector('nav button').addEventListener('click', () => {
+            alert('Mobile menu would open here in a full implementation');
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
