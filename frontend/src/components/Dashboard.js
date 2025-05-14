@@ -5,7 +5,7 @@ import monitorService from '../services/monitorService';
 import Modal from './Modal';
 import AddMonitor from './AddMonitor';
 
-const Dashboard = () => {
+const DashboardComponent = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -188,4 +188,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard; 
+export default DashboardComponent; 
