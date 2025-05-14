@@ -188,6 +188,36 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Add FAQ Section */}
+      <section id="faq" className="py-16 md:py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Frequently Asked Questions</h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">Everything you need to know about our service.</p>
+          </div>
+          <div className="max-w-3xl mx-auto">
+            {faqs.map((faq, idx) => (
+              <div key={idx} className="mb-4">
+                <button
+                  onClick={() => handleFaqToggle(idx)}
+                  className="w-full text-left p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition"
+                >
+                  <div className="flex justify-between items-center">
+                    <span className="font-medium">{faq.question}</span>
+                    <i className={`fas fa-chevron-${openFaq === idx ? 'up' : 'down'} text-gray-500`}></i>
+                  </div>
+                </button>
+                {openFaq === idx && (
+                  <div className="mt-2 p-4 bg-gray-50 rounded-lg">
+                    <p className="text-gray-600">{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
     </div>
   );
 };
